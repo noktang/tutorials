@@ -1,0 +1,240 @@
+pr:
+- main
+trigger:
+- main
+pool:
+  vmImage: 'ubuntu-latest'
+name: "AR WAF Maintenance"
+parameters:
+  - name: env
+    displayName: environment
+    type: string
+    default: "dev"
+    values:
+      - dev
+      - sit
+      - uat
+      - prod
+  - name: disable_flag
+    displayName: action
+    type: string
+    default: "status"
+    values:
+      - status
+      - enable
+      - disable
+  # - name: policies
+  #   displayName: apply AR for below policies
+  #   type: object
+  #   default:
+  #     - test1-app-prod-private-waf-policy
+  #     - test2-app-prod-private-waf-policy
+  #     - test3-app-prod-private-waf-policy
+  #   values:
+  #   # [ "test1-app-prod-private-waf-policy", "test2-app-prod-private-waf-policy", "test3-app-prod-private-waf-policy", "hcv-ui-prod-private-waf-policy", "hcv-ui-prod-public-waf-policy", "aris-app-prod-private-waf-policy", "aris-app-prod-public-waf-policy", "audit-app-prod-private-waf-policy", "colnet-app-prod-private-waf-policy", "dcp-app-prod-private-waf-policy", "dcp-app-prod-public-waf-policy", "des-app-prod-private-waf-policy", "des-app-prod-public-waf-policy", "eCollision-app-prod-private-waf-policy", "ij-app-prod-private-waf-policy", "iss-app-prod-private-waf-policy", "ss-app-prod-public-waf-policy", "jtips-app-prod-private-waf-policy", "jtips-app-prod-public-waf-policy", "melt-app-prod-public-waf-policy", "mqa-app-prod-private-waf-policy", "oms-app-prod-private-waf-policy", "rams-app-prod-private-waf-policy", "rams-app-prod-public-waf-policy", "uas-app-prod-private-waf-policy", "uas-app-prod-public-waf-policy", "opc-ui-prod-private-waf-policy", "opc-ui-prod-public-waf-policy", "rdc-ui-prd-private-waf-policy", "cfs-ui-prod-public-waf-policy"]
+  #     - test1-app-prod-private-waf-policy
+  #     - test2-app-prod-private-waf-policy
+  #     - test3-app-prod-private-waf-policy
+  #     - hcv-ui-prod-private-waf-policy
+  #     - hcv-ui-prod-public-waf-policy
+  #     - aris-app-prod-private-waf-policy
+  #     - aris-app-prod-public-waf-policy
+  #     - audit-app-prod-private-waf-policy
+  #     - colnet-app-prod-private-waf-policy
+  #     - dcp-app-prod-private-waf-policy
+  #     - dcp-app-prod-public-waf-policy
+  #     - des-app-prod-private-waf-policy
+  #     - des-app-prod-public-waf-policy
+  #     - eCollision-app-prod-private-waf-policy
+  #     - ij-app-prod-private-waf-policy
+  #     - iss-app-prod-private-waf-policy
+  #     - ss-app-prod-public-waf-policy
+  #     - jtips-app-prod-private-waf-policy
+  #     - jtips-app-prod-public-waf-policy
+  #     - melt-app-prod-public-waf-policy
+  #     - mqa-app-prod-private-waf-policy
+  #     - oms-app-prod-private-waf-policy
+  #     - rams-app-prod-private-waf-policy
+  #     - rams-app-prod-public-waf-policy
+  #     - uas-app-prod-private-waf-policy
+  #     - uas-app-prod-public-waf-policy
+  #     - opc-ui-prod-private-waf-policy
+  #     - opc-ui-prod-public-waf-policy
+  #     - rdc-ui-prd-private-waf-policy
+  #     - cfs-ui-prod-public-waf-policy
+  - name: test1-app-prod-private-waf-policy
+    type: boolean
+    default: false
+  - name: test2-app-prod-private-waf-policy
+    type: boolean
+    default: false
+  - name: test3-app-prod-private-waf-policy
+    type: boolean
+    default: false
+  # - name: hcv-ui-prod-private-waf-policy
+  #   type: boolean
+  #   default: false
+  # - name: hcv-ui-prod-public-waf-policy
+  #   type: boolean
+  #   default: false
+  # - name: aris-app-prod-private-waf-policy
+  #   type: boolean
+  #   default: false
+  # - name: aris-app-prod-public-waf-policy
+  #   type: boolean
+  #   default: false
+  # - name: audit-app-prod-private-waf-policy
+  #   type: boolean
+  #   default: false
+  # - name: colnet-app-prod-private-waf-policy
+  #   type: boolean
+  #   default: false
+  # - name: dcp-app-prod-private-waf-policy
+  #   type: boolean
+  #   default: false
+  # - name: dcp-app-prod-public-waf-policy
+  #   type: boolean
+  #   default: false
+  # - name: des-app-prod-private-waf-policy
+  #   type: boolean
+  #   default: false
+  # - name: des-app-prod-public-waf-policy
+  #   type: boolean
+  #   default: false
+  # - name: eCollision-app-prod-private-waf-policy
+  #   type: boolean
+  #   default: false
+  # - name: ij-app-prod-private-waf-policy
+  #   type: boolean
+  #   default: false
+  # - name: iss-app-prod-private-waf-policy
+  #   type: boolean
+  #   default: false
+  # - name: ss-app-prod-public-waf-policy
+  #   type: boolean
+  #   default: false
+  # - name: jtips-app-prod-private-waf-policy
+  #   type: boolean
+  #   default: false
+  # - name: jtips-app-prod-public-waf-policy
+  #   type: boolean
+  #   default: false
+  # - name: melt-app-prod-public-waf-policy
+  #   type: boolean
+  #   default: false
+  # - name: mqa-app-prod-private-waf-policy
+  #   type: boolean
+  #   default: false
+  # - name: oms-app-prod-private-waf-policy
+  #   type: boolean
+  #   default: false
+  # - name: rams-app-prod-private-waf-policy
+  #   type: boolean
+  #   default: false
+  # - name: rams-app-prod-public-waf-policy
+  #   type: boolean
+  #   default: false
+  # - name: uas-app-prod-private-waf-policy
+  #   type: boolean
+  #   default: false
+  # - name: uas-app-prod-public-waf-policy
+  #   type: boolean
+  #   default: false
+  # - name: opc-ui-prod-private-waf-policy
+  #   type: boolean
+  #   default: false
+  # - name: opc-ui-prod-public-waf-policy
+  #   type: boolean
+  #   default: false
+  # - name: rdc-ui-prd-private-waf-policy
+  #   type: boolean
+  #   default: false
+  # - name: cfs-ui-prod-public-waf-policy
+  #   type: boolean
+  #   default: false
+# steps:
+#   - ${{ each parameter in parameters }}:
+#       - ${{ if and(endsWith(parameter.Key, '-waf-policy'), eq(parameter.Value, true)) }}:
+#           - script: echo "##vso[task.setvariable variable=policy_name;]${{ parameter.Key }}"
+#           - script: echo "##vso[task.setvariable variable=policy_value;]${{ parameter.Value }}"
+#           - task: Ansible@0
+#             displayName: 'Enable AR Playbook'
+#             condition: eq(variables.function_control, 'Enable')
+#             inputs:
+#               ansibleInterface: 'agentMachine'
+#               playbookPathOnAgentMachine: '$(System.DefaultWorkingDirectory)/_Playbooks/waf_custom_rules/main.yml'
+#               inventoriesAgentMachine: 'noInventory'
+#             #  args:  -e app_name_list_string=''$(APP_NAME_LIST)'' -e action_type=''$(START)'' '
+#           - task: Ansible@0
+#             displayName: "Disable AR Playbook"
+#             condition: eq(variables.function_control, 'Enable')
+#             inputs:
+#               ansibleInterface: 'agentMachine'
+#               playbookPathOnAgentMachine: '$(System.DefaultWorkingDirectory)/_Playbooks/waf_custom_rules/main.yml'
+#               inventoriesAgentMachine: 'noInventory'
+#             #  args:  -e app_name_list_string=''$(APP_NAME_LIST)'' -e action_type=''$(START)'' '
+variables:
+  - name: function_control
+    value: ''
+  - name: selectedKeys
+    value: 'null'
+stages:
+  - stage:
+    jobs:
+    - ${{ each parameter in parameters }}:
+      - ${{ if eq(parameter.Key, 'disable_flag') }}:
+        - job: A
+          steps:
+          - script: |
+              echo "##vso[task.setvariable variable=function_control;isOutput=true]${{ parameter.Value }}"
+            name: function_control
+      - ${{ if and(endsWith(parameter.Key, '-waf-policy'), eq(parameter.Value, 'True'), eq(variables.selectedKeys, 'null')) }}":
+        - job: B
+          steps:
+          - script: |
+              echo "1"
+              echo "##vso[task.setvariable variable=selectedKeys;isOutput=true]${{ parameter.Key }}"
+            name: selectedKeys
+      - ${{ if if and(endsWith(parameter.Key, '-waf-policy'), eq(parameter.Value, 'True'), ne(variables.selectedKeys, 'null')) }}":
+        - job: C
+          dependsOn: B
+          variables:
+            selectedKeys: $[ dependencies.B.outputs['selectedKeys.selectedKeys'] ]
+          steps:
+          - script: |
+              echo "2"
+              temp_selected_keys="$(selectedKeys),${{ parameter.Key }}"
+      # steps:
+      # - ${{ each parameter in parameters }}:
+      #   - script: |
+      #       echo ${{ parameter.Key }}
+      #       echo ${{ parameter.Value }}
+      #       ls
+      #       if [[ ${{ parameter.Key }} == "disable_flag" ]]; then
+      #         echo "##vso[task.setvariable variable=function_control]${{ parameter.Value }}"
+      #       elif [[ ${{ parameter.Key }} == *-waf-policy* && ${{ parameter.Value }} == True ]]; then
+      #         if [[ "$(selectedKeys)" == 'null' ]]; then
+      #           echo "1"
+      #           echo "##vso[task.setvariable variable=selectedKeys]${{ parameter.Key }}"
+      #         else
+      #           echo "2"
+      #           temp_selected_keys="$(selectedKeys),${{ parameter.Key }}"
+      #           echo "##vso[task.setvariable variable=selectedKeys]$temp_selected_keys"
+      #           # echo "##vso[task.setvariable variable=ListSelectedKeys;isOutput=true]$temp_selected_keys"
+      #         fi
+      #       fi
+      #       echo "function_control: $(function_control)"
+      #       echo "selectedKeys: $temp_selected_keys"
+      #       echo "##vso[task.setvariable variable=ListSelectedKeys;isOutput=true]$temp_selected_keys"
+    - job: add_build_tag
+      dependsOn: A
+      variables:
+        function_control: $[ dependencies.A.outputs['function_control.function_control'] ]
+      steps:
+      - script: |
+          echo "env: ${{ parameters.env }}"
+          echo "flag: ${{ parameters.disable_flag }}"
+          echo "##vso[build.addbuildtag]${{parameters.disable_flag}}"
+          echo "##vso[build.addbuildtag]${{parameters.env}}"
+          echo "function_control: $(function_control)"
+          # echo "selectedKeys: $(ListSelectedKeys)"
